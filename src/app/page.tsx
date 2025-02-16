@@ -1,51 +1,50 @@
+import Image from "next/image";
 import Link from "next/link";
 
-import { LatestPost } from "~/app/_components/post";
 import { api, HydrateClient } from "~/trpc/server";
 
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-
-  void api.post.getLatest.prefetch();
+  const races = await api.racesList.getRacesList();
 
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+      <main>
+        <div className="flex flex-col gap-6">
+          <h1 className="mt-4 text-4xl font-extrabold tracking-tight">
+            Gran Turismo 7 Custom Leaderboards
           </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
+          <h2 className="text-2xl font-bold tracking-tight">Races list</h2>
+          <div className="flex flex-col gap-2">
+            {races?.map((race, index) => (
+              <Link
+                href={`/race/${race.raceResultsSheetName}`}
+                key={`${index}-${race.raceResultsSheetName}`}
+              >
+                <div className="flex flex-col gap-2 rounded-lg border border-gray-700 bg-gray-800 p-4">
+                  <section className="flex flex-row justify-between gap-2">
+                    <Image
+                      alt={`Logo of ${race.trackLocation}.`}
+                      height={200}
+                      src={decodeURIComponent(race.trackLocationLogoBase64)}
+                      width={200}
+                    />
+                    <Image
+                      alt={`Image of ${race.car}.`}
+                      className="rounded object-cover"
+                      height={200}
+                      src={race.carImageUrl}
+                      width={300}
+                    />
+                  </section>
+                  <p className="text-lg">
+                    {race.region} - {race.trackCountryFlag}{" "}
+                    {race.trackCountryName} - {race.trackLocation}{" "}
+                    {race.trackLayout} - {race.car}
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
-            </p>
-          </div>
-
-          <LatestPost />
         </div>
       </main>
     </HydrateClient>

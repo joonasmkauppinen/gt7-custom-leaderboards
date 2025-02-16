@@ -15,9 +15,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+    <html lang="en" className={`${GeistSans.variable} bg-gray-950`}>
+      <body className="flex min-h-screen flex-col items-center bg-gradient-to-b from-gray-900 to-gray-950 pt-4 text-white">
+        <main className="mx-4 max-w-[900px]">
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </main>
       </body>
     </html>
   );
