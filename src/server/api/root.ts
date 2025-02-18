@@ -1,5 +1,5 @@
-import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
-import { driverNamesRouter } from "~/server/api/routers/driverNames";
+import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
+import { driverNamesRouter } from "@/server/api/routers/driverNames";
 import { racesListRouter } from "./routers/racesList";
 import { raceResultsRouter } from "./routers/raceResults";
 

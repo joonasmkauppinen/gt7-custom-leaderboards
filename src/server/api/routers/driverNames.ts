@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 type GoogleSheetDriverNamesValues = Array<Array<string>>;
 type NormalizedDriverNames = Array<{ name: string }>;

@@ -1,7 +1,7 @@
 import { google } from "googleapis";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 type GoogleSheetRaceResultsValues = Array<Array<string>>;
 type RaceResultItem = {

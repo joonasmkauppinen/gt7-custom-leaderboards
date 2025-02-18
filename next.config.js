@@ -12,6 +12,10 @@ const config = {
         protocol: "https",
         hostname: "static.wikia.nocookie.net",
       },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+      },
     ],
   },
 };
