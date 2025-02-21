@@ -3,8 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export function RaceListItem(props: RaceListItem) {
-  console.log({ props });
-
   return (
     <Link href={`race/${props.raceResultsSheetName}`}>
       <li className="bg-list-item-bg border-list-item-border flex flex-col rounded-xl border p-4">

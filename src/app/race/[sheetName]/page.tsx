@@ -1,50 +1,28 @@
+import ResultsList from "@/app/_components/ResultsList";
 import { api, HydrateClient } from "@/trpc/server";
+import { Suspense } from "react";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ sheetName: string }>;
-}) {
-  const slug = (await params).sheetName;
-  const results = await api.raceResults.getRaceResult({ sheetName: slug });
+type Params = {
+  params: Promise<{
+    sheetName: string;
+  }>;
+};
+
+export default async function Page({ params }: Params) {
+  const sheetName = (await params).sheetName;
+  const results = api.raceResults.getRaceResult({ sheetName });
 
   return (
     <HydrateClient>
       <main>
-        <h1 className="mb-2 flex flex-col">
+        <h1 className="mx-4 mb-2 flex flex-col">
           <span className="text-sm">Results for</span>
-          <span className="text-2xl">{slug}</span>
+          <span className="text-2xl">{sheetName}</span>
         </h1>
 
-        <table className="mt-4 table-auto">
-          <thead>
-            <tr>
-              <th className="text-start">Driver</th>
-              <th className="text-start">Laptime</th>
-              <th className="text-start">Gap</th>
-              <th className="text-start">Date</th>
-            </tr>
-          </thead>
-          <tbody className="">
-            {results?.map((result, index) => (
-              <tr
-                key={index}
-                className="m-2 border border-gray-700 bg-gray-800"
-              >
-                <td className="border-r border-gray-700 p-1">
-                  {result.driverName}
-                </td>
-                <td className="border-r border-gray-700 p-1">
-                  {result.laptimeFormattedDuration}
-                </td>
-                <td className="border-r border-gray-700 p-1">TODO: calc gap</td>
-                <td className="border-r border-gray-700 p-1">
-                  {result.laptimeISO8601Date}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Suspense fallback={<p>Loading...</p>}>
+          <ResultsList results={results} />
+        </Suspense>
       </main>
     </HydrateClient>
   );

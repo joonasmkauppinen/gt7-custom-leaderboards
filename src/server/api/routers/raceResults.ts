@@ -6,32 +6,33 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 type GoogleSheetRaceResultsValues = Array<Array<string>>;
 type RaceResultItem = {
   driverName: string;
-  laptimeISO8601Duration: string;
   laptimeFormattedDuration: string;
   laptimeGoogleSheetsDuration: string;
-  laptimeISO8601Date: string;
+  dateAdded: string;
+  laptimeISO8601Duration: string;
+  laptimeInMs: number;
 };
-type NormalizedRacesList = Array<RaceResultItem>;
+export type NormalizedRaceResultsList = Array<RaceResultItem>;
 
-const normalizeRacesList = (
-  racesListValues: GoogleSheetRaceResultsValues,
-): NormalizedRacesList => {
-  const keys = racesListValues[0];
+const normalizeRaceResults = (
+  raceResultsValues: GoogleSheetRaceResultsValues,
+): NormalizedRaceResultsList => {
+  const keys = raceResultsValues[0];
 
   if (!keys) {
     return [];
   }
 
-  const values = racesListValues.slice(1);
+  const values = raceResultsValues.slice(1);
 
   return values.map((valuesRow) => {
-    const raceListItem = keys.reduce((acc, key, index) => {
+    const resultListItem = keys.reduce((acc, key, index) => {
       // @ts-expect-error - we know that the valuesRow has the same length as keys
       acc[key] = valuesRow[index];
       return acc;
     }, {}) as RaceResultItem;
 
-    return raceListItem;
+    return resultListItem;
   });
 };
 
@@ -47,14 +48,15 @@ export const raceResultsRouter = createTRPCRouter({
       try {
         const result = await service.spreadsheets.values.get({
           spreadsheetId: process.env.SHEET_ID,
-          range: `${input.sheetName}!A:E`,
+          range: `${input.sheetName}!A:F`,
         });
 
-        const racesListValues = result.data
+        const raceResultsValues = result.data
           .values as GoogleSheetRaceResultsValues;
-        const normalizedRacesList = normalizeRacesList(racesListValues);
+        const normalizedRaceResultsList =
+          normalizeRaceResults(raceResultsValues);
 
-        return normalizedRacesList;
+        return normalizedRaceResultsList;
       } catch (error) {
         return null;
       }
