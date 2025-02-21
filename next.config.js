@@ -16,6 +16,14 @@ const config = {
         protocol: "https",
         hostname: "upload.wikimedia.org",
       },
+      {
+        protocol: "https",
+        hostname: "msvstatic.blob.core.windows.net",
+      },
+      {
+        protocol: "https",
+        hostname: "weathertechraceway.com",
+      },
     ],
   },
 };

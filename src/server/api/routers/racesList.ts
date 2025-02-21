@@ -5,17 +5,19 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 type GoogleSheetRacesListValues = Array<Array<string>>;
 
 export type RaceListItem = {
-  car?: string;
+  car: string;
   carImageUrl?: string;
+  raceCreatedAtDate: string;
   raceResultsSheetName?: string;
-  region?: string;
+  region: string;
   trackCountryFlag?: string;
-  trackCountryName?: string;
-  trackLayout?: string;
+  trackCountryName: string;
+  trackLayout: string;
   trackLengthInMeters?: number;
-  trackLocation?: string;
+  trackLocation: string;
   trackLocationLogoUrl?: string;
   trackMapImageUrl?: string;
+  trackPromoImageUrl?: string;
 };
 
 type NormalizedRacesList = Array<RaceListItem>;
@@ -54,7 +56,7 @@ export const racesListRouter = createTRPCRouter({
     try {
       const result = await service.spreadsheets.values.get({
         spreadsheetId: process.env.SHEET_ID,
-        range: `${SHEET_NAME}!A:K`,
+        range: `${SHEET_NAME}!A:M`,
       });
 
       const racesListValues = result.data.values as GoogleSheetRacesListValues;

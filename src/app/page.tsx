@@ -11,7 +11,7 @@ export default async function Home() {
           <h1 className="mt-4 text-4xl font-extrabold tracking-tight">
             Gran Turismo 7 Custom Leaderboards
           </h1>
-          <h2 className="text-2xl font-bold tracking-tight">Races list</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Race catalogue</h2>
           <ul className="flex flex-col gap-4">
             {races?.map((race) => (
               <RaceListItem key={race.raceResultsSheetName} {...race} />
