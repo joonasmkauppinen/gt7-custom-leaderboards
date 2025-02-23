@@ -1,70 +1,25 @@
-import type { FC, ReactNode } from "react";
 import { type RaceListItem } from "@/server/api/routers/racesList";
 
 import Image from "next/image";
 import Link from "next/link";
 import { IconGlobe } from "./IconGlobe";
-
-const getOrdinalSuffix = (day: number) => {
-  if (day > 3 && day < 21) return "th";
-  switch (day % 10) {
-    case 1:
-      return "st";
-    case 2:
-      return "nd";
-    case 3:
-      return "rd";
-    default:
-      return "th";
-  }
-};
+import { InfoSectionContainer } from "./InfoSectionContainer";
+import { diffFromNow, longDateFormat } from "../helpers/dateFormatHelpers";
 
 export function RaceListItem(props: RaceListItem) {
   const trackLengthInKm = ((props.trackLengthInMeters ?? 0) / 1000).toFixed(2);
-  const formattedRaceStartDate = (() => {
-    const date = new Date(props.raceCreatedAtDate);
-    const day = date.getDate();
-    const month = date.toLocaleString("en-US", { month: "long" });
-    const year = date.getFullYear();
-    return `${day}${getOrdinalSuffix(day)} of ${month} ${year}`;
-  })();
-  const raceStartedSince = (() => {
-    const date = new Date(props.raceCreatedAtDate).getTime();
-    const now = Date.now();
-    const diff = now - date;
-    const diffInDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    if (diffInDays === 0) {
-      return "Today";
-    }
-
-    if (diffInDays === 1) {
-      return "Yesterday";
-    }
-
-    if (diffInDays < 7) {
-      return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
-    }
-
-    const diffInWeeks = Math.floor(diffInDays / 7);
-
-    if (diffInWeeks < 4) {
-      return `${diffInWeeks} week${diffInWeeks > 1 ? "s" : ""} ago`;
-    }
-
-    const diffInMonths = Math.floor(diffInDays / 30);
-
-    if (diffInMonths < 12) {
-      return `${diffInMonths} month${diffInMonths > 1 ? "s" : ""} ago`;
-    }
-
-    const diffInYears = Math.floor(diffInDays / 365);
-
-    return `${diffInYears} year${diffInYears > 1 ? "s" : ""} ago`;
-  })();
+  const formattedRaceStartDate = longDateFormat(props.raceCreatedAtDate);
+  const raceStartedSince = diffFromNow(props.raceCreatedAtDate);
 
   return (
-    <Link href={`race/${props.raceResultsSheetName}`}>
+    <Link
+      href={{
+        pathname: `leaderboard/${props.raceResultsSheetName}`,
+        query: {
+          ...props,
+        },
+      }}
+    >
       <li className="relative flex flex-col overflow-hidden rounded-2xl border border-list-item-border bg-list-item-bg">
         {/* BG IMAGE AND SCRIM - ABSOLUTE */}
         <div className="absolute bottom-0 left-0 right-0 top-0 z-0 flex flex-col">
@@ -85,7 +40,7 @@ export function RaceListItem(props: RaceListItem) {
         <div className="z-10 flex flex-row items-center border-b border-[rgba(255,255,255,0.25)] bg-[rgba(0,0,0,0.1)] px-4 pb-3 pt-4 backdrop-blur-xl">
           <IconGlobe />
           <p className="ml-1 text-sm font-medium">
-            {props.region} • {props.trackCountryName}
+            {props.region} · {props.trackCountryName}
           </p>
         </div>
 
@@ -108,7 +63,7 @@ export function RaceListItem(props: RaceListItem) {
               Race opened
             </p>
             <p className="text-base font-semibold text-white">
-              {raceStartedSince} • {formattedRaceStartDate}
+              {raceStartedSince} · {formattedRaceStartDate}
             </p>
           </div>
 
@@ -158,7 +113,7 @@ export function RaceListItem(props: RaceListItem) {
           </InfoSectionContainer>
 
           {/* OPEN LEADERBOARD */}
-          <button className="mt-6 rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.1)] transition-colors duration-200 ease-in-out hover:bg-white">
+          <button className="mt-6 rounded-md border border-[rgba(255,255,255,0.15)] bg-button transition-colors duration-200 ease-in-out hover:bg-white">
             <p className="px-2 py-3 text-base font-semibold text-white hover:text-black">
               Open Leaderboard
             </p>
@@ -168,16 +123,3 @@ export function RaceListItem(props: RaceListItem) {
     </Link>
   );
 }
-
-const InfoSectionContainer: FC<{ children: ReactNode; className?: string }> = ({
-  children,
-  className,
-}) => {
-  return (
-    <div
-      className={`flex flex-row overflow-hidden rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.05)] ${className}`}
-    >
-      {children}
-    </div>
-  );
-};

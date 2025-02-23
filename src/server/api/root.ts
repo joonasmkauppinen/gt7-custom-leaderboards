@@ -1,7 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { driverNamesRouter } from "@/server/api/routers/driverNames";
 import { racesListRouter } from "./routers/racesList";
-import { raceResultsRouter } from "./routers/raceResults";
+import { leaderboardRouter } from "./routers/leaderboard";
 
 /**
  * This is the primary router for your server.
@@ -11,7 +11,7 @@ import { raceResultsRouter } from "./routers/raceResults";
 export const appRouter = createTRPCRouter({
   driverNames: driverNamesRouter,
   racesList: racesListRouter,
-  raceResults: raceResultsRouter,
+  leaderboard: leaderboardRouter,
 });
 
 // export type definition of API

@@ -4,40 +4,38 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 type GoogleSheetRaceResultsValues = Array<Array<string>>;
-type RaceResultItem = {
+export type LeaderboardItem = {
   driverName: string;
-  laptimeFormattedDuration: string;
   laptimeGoogleSheetsDuration: string;
   dateAdded: string;
-  laptimeISO8601Duration: string;
-  laptimeInMs: number;
+  laptimeInMs: string;
 };
-export type NormalizedRaceResultsList = Array<RaceResultItem>;
+export type NormalizedLeaderboardList = Array<LeaderboardItem>;
 
-const normalizeRaceResults = (
-  raceResultsValues: GoogleSheetRaceResultsValues,
-): NormalizedRaceResultsList => {
-  const keys = raceResultsValues[0];
+const normalizeLeaderboard = (
+  leaderboardResultsValues: GoogleSheetRaceResultsValues,
+): NormalizedLeaderboardList => {
+  const keys = leaderboardResultsValues[0];
 
   if (!keys) {
     return [];
   }
 
-  const values = raceResultsValues.slice(1);
+  const values = leaderboardResultsValues.slice(1);
 
   return values.map((valuesRow) => {
-    const resultListItem = keys.reduce((acc, key, index) => {
+    const leaderboardListItem = keys.reduce((acc, key, index) => {
       // @ts-expect-error - we know that the valuesRow has the same length as keys
       acc[key] = valuesRow[index];
       return acc;
-    }, {}) as RaceResultItem;
+    }, {}) as LeaderboardItem;
 
-    return resultListItem;
+    return leaderboardListItem;
   });
 };
 
-export const raceResultsRouter = createTRPCRouter({
-  getRaceResult: publicProcedure
+export const leaderboardRouter = createTRPCRouter({
+  getLeaderboard: publicProcedure
     .input(z.object({ sheetName: z.string() }))
     .query(async ({ input }) => {
       const auth = await google.auth.getClient({
@@ -48,15 +46,12 @@ export const raceResultsRouter = createTRPCRouter({
       try {
         const result = await service.spreadsheets.values.get({
           spreadsheetId: process.env.SHEET_ID,
-          range: `${input.sheetName}!A:F`,
+          range: `${input.sheetName}!A:D`,
         });
 
-        const raceResultsValues = result.data
+        const leaderboardValues = result.data
           .values as GoogleSheetRaceResultsValues;
-        const normalizedRaceResultsList =
-          normalizeRaceResults(raceResultsValues);
-
-        return normalizedRaceResultsList;
+        return normalizeLeaderboard(leaderboardValues);
       } catch (error) {
         return null;
       }
