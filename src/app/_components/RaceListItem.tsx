@@ -2,7 +2,7 @@ import { type RaceListItem } from "@/server/api/routers/racesList";
 
 import Image from "next/image";
 import Link from "next/link";
-import { IconGlobe } from "./IconGlobe";
+import { IconGlobe } from "./icons/IconGlobe";
 import { InfoSectionContainer } from "./InfoSectionContainer";
 import { diffFromNow, longDateFormat } from "../helpers/dateFormatHelpers";
 
@@ -31,7 +31,7 @@ export function RaceListItem(props: RaceListItem) {
               layout="fill"
               className="flex flex-1 object-cover"
             />
-            <div className="from-list-item-scrim-start to-list-item-scrim-end absolute bottom-0 left-0 right-0 top-0 bg-gradient-to-b" />
+            <div className="absolute bottom-0 left-0 right-0 top-0 bg-gradient-to-b from-list-item-scrim-start to-list-item-scrim-end" />
           </div>
           <div className="bg-[rgba(255, 255, 255, 0.05)] flex h-[80px]" />
         </div>
@@ -59,7 +59,7 @@ export function RaceListItem(props: RaceListItem) {
         <div className="flex flex-col gap-2 border-t border-[rgba(255,255,255,0.25)] p-4 backdrop-blur-xl">
           {/* RACE OPENED */}
           <div>
-            <p className="text-subtitle text-sm font-semibold leading-3">
+            <p className="text-sm font-semibold leading-3 text-subtitle">
               Race opened
             </p>
             <p className="text-base font-semibold text-white">
@@ -80,13 +80,13 @@ export function RaceListItem(props: RaceListItem) {
             </div>
 
             <div className="my-2 mr-2 flex flex-col justify-center">
-              <p className="text-subtitle text-sm font-semibold leading-5">
+              <p className="text-sm font-semibold leading-5 text-subtitle">
                 Track
               </p>
               <p className="text-base font-semibold leading-5 text-white">
                 {props.trackLocation ?? ""} - {props.trackLayout}
               </p>
-              <p className="text-subtitle text-sm font-semibold">
+              <p className="text-sm font-semibold text-subtitle">
                 {trackLengthInKm} km
               </p>
             </div>
@@ -105,7 +105,7 @@ export function RaceListItem(props: RaceListItem) {
             </div>
 
             <div className="my-2 mr-2 flex flex-col justify-center">
-              <p className="text-subtitle text-sm font-semibold">Car</p>
+              <p className="text-sm font-semibold text-subtitle">Car</p>
               <p className="text-base font-semibold leading-5 text-white">
                 {props.car ?? ""}
               </p>

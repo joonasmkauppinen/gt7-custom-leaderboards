@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Header } from "./Header";
-import { IconChevronLeft } from "./IconChevronLeft";
+import { IconChevronLeft } from "./icons/IconChevronLeft";
 
 export default function HeaderLeaderboard() {
   const router = useRouter();

@@ -1,12 +1,12 @@
 import type { RaceListItem } from "@/server/api/routers/racesList";
-
+import { Suspense, type FC, type ReactNode } from "react";
 import Leaderboard from "@/app/_components/Leaderboard";
 import { api, HydrateClient } from "@/trpc/server";
-import { FC, ReactNode, Suspense } from "react";
 import { diffFromNow, longDateFormat } from "@/app/helpers/dateFormatHelpers";
 import Image from "next/image";
 import { InfoSectionContainer } from "@/app/_components/InfoSectionContainer";
 import HeaderLeaderboard from "@/app/_components/HeaderLeaderboard";
+import { AddLaptimeButton } from "@/app/_components/AddLaptimeButton";
 
 type Slug = {
   sheetName: string;
@@ -44,7 +44,7 @@ export default async function Page({ params, searchParams }: Params) {
             width={1920}
             height={1080}
             objectFit="cover"
-            className="mask-image-gradient-linear mb-8"
+            className="mb-8 mask-image-gradient-linear"
           />
           <div className="absolute bottom-0 flex h-[150px] w-[200px] items-center justify-center rounded-md bg-white p-2">
             <Image
@@ -58,7 +58,7 @@ export default async function Page({ params, searchParams }: Params) {
 
         {/* TITTLE SECTION */}
         <SectionContainer className="mb-6">
-          <p className="text-subtitle text-sm font-semibold">
+          <p className="text-sm font-semibold text-subtitle">
             {query.region} · {query.trackCountryName}
           </p>
           <h1 className="text-2xl font-bold">
@@ -69,7 +69,7 @@ export default async function Page({ params, searchParams }: Params) {
         {/* RACE DETAILS SECTION */}
         <SectionContainer className="mb-6 flex flex-col gap-2">
           <div>
-            <p className="text-subtitle text-sm font-semibold leading-3">
+            <p className="text-sm font-semibold leading-3 text-subtitle">
               Race opened
             </p>
             <p className="text-base font-semibold text-white">
@@ -88,13 +88,13 @@ export default async function Page({ params, searchParams }: Params) {
               />
             </div>
             <div className="my-2 mr-2 flex flex-col justify-center">
-              <p className="text-subtitle text-sm font-semibold leading-5">
+              <p className="text-sm font-semibold leading-5 text-subtitle">
                 Track
               </p>
               <p className="text-base font-semibold leading-5 text-white">
                 {query.trackLocation ?? ""} - {query.trackLayout}
               </p>
-              <p className="text-subtitle text-sm font-semibold">
+              <p className="text-sm font-semibold text-subtitle">
                 {trackLengthInKm} km
               </p>
             </div>
@@ -112,7 +112,7 @@ export default async function Page({ params, searchParams }: Params) {
             </div>
 
             <div className="my-2 mr-2 flex flex-col justify-center">
-              <p className="text-subtitle text-sm font-semibold">Car</p>
+              <p className="text-sm font-semibold text-subtitle">Car</p>
               <p className="text-base font-semibold leading-5 text-white">
                 {query.car ?? ""}
               </p>
@@ -122,9 +122,7 @@ export default async function Page({ params, searchParams }: Params) {
 
         {/* ADD LAP TIME BUTTON SECTION */}
         <SectionContainer className="mb-6">
-          <button className="border-info-item-border w-full rounded-md border bg-button py-3 text-base font-semibold text-white">
-            + Add Lap Time
-          </button>
+          <AddLaptimeButton />
         </SectionContainer>
 
         {/* LEADERBOARD SECTION */}

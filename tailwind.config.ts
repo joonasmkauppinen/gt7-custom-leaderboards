@@ -21,6 +21,8 @@ export default {
         subtitle: "#B3B3B3",
         "table-highlighted-row-bg": "rgba(233, 255, 86, 0.15)",
         "table-highlighted-row-border": "#E7E739",
+        "input-bg": "rgba(255, 255, 255, 0.05)",
+        "input-border": "rgba(255, 255, 255, 0.4)",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],

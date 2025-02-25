@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 const getOrdinalSuffix = (day: number) => {
   if (day > 3 && day < 21) return "th";
   switch (day % 10) {
@@ -53,4 +55,12 @@ export const diffFromNow = (dateString: string) => {
   const diffInYears = Math.floor(diffInDays / 365);
 
   return `${diffInYears} year${diffInYears > 1 ? "s" : ""} ago`;
+};
+
+/**
+ * Helper function to convert milliseconds to mm:ss.SSS format
+ */
+export const millisecondsToLaptime = (milliseconds: number): string => {
+  const date = new Date(milliseconds);
+  return format(date, "mm:ss.SSS");
 };

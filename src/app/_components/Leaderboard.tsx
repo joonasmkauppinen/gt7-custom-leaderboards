@@ -1,40 +1,18 @@
 "use client";
 
 import type { FC, ReactNode } from "react";
-import {
+import type {
   LeaderboardItem,
-  type NormalizedLeaderboardList,
+  NormalizedLeaderboardList,
 } from "@/server/api/routers/leaderboard";
 
 import { use, useEffect, useState } from "react";
-import { format } from "date-fns";
-import { diffFromNow, longDateFormat } from "../helpers/dateFormatHelpers";
-
-/**
- * Helper function to convert milliseconds to mm:ss.SSS format
- */
-function millisecondsToLaptime(milliseconds: number): string {
-  const date = new Date(milliseconds);
-  return format(date, "mm:ss.SSS");
-}
-
-const TableData: FC<{
-  children: ReactNode;
-  className?: string;
-  isHighlighted?: boolean;
-}> = ({ children, className, isHighlighted }) => {
-  const highlightClasses = isHighlighted
-    ? "border-y border-y-table-highlighted-row-border first:border-l first:border-l-table-highlighted-row-border last:border-r last:border-r-table-highlighted-row-border bg-table-highlighted-row-bg"
-    : "last:border-r-0";
-
-  return (
-    <td
-      className={`text-shadow-sm border-r border-gray-700 px-3 py-[10px] font-mono text-base font-semibold first:rounded-l-lg last:rounded-r-lg ${className} ${highlightClasses}`}
-    >
-      {children}
-    </td>
-  );
-};
+import {
+  diffFromNow,
+  longDateFormat,
+  millisecondsToLaptime,
+} from "../helpers/dateFormatHelpers";
+import { AddLapTimeModal } from "./AddLapTimeModal";
 
 type RaceResultsProps = {
   results: Promise<NormalizedLeaderboardList | null>;
@@ -48,6 +26,11 @@ export default function Leaderboard({ results }: RaceResultsProps) {
   const [highlightedRowIndex, setHighlightedRowIndex] = useState<number | null>(
     null,
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    setHighlightedRowIndex(null);
+  }, [activeTab]);
 
   if (!unsortedResults || unsortedResults.length === 0) {
     return (
@@ -90,10 +73,6 @@ export default function Leaderboard({ results }: RaceResultsProps) {
 
     setHighlightedRowIndex(index);
   };
-
-  useEffect(() => {
-    setHighlightedRowIndex(null);
-  }, [activeTab]);
 
   return (
     <div>
@@ -206,3 +185,21 @@ export default function Leaderboard({ results }: RaceResultsProps) {
     </div>
   );
 }
+
+const TableData: FC<{
+  children: ReactNode;
+  className?: string;
+  isHighlighted?: boolean;
+}> = ({ children, className, isHighlighted }) => {
+  const highlightClasses = isHighlighted
+    ? "border-y border-y-table-highlighted-row-border first:border-l first:border-l-table-highlighted-row-border last:border-r last:border-r-table-highlighted-row-border bg-table-highlighted-row-bg"
+    : "last:border-r-0";
+
+  return (
+    <td
+      className={`border-r border-gray-700 px-3 py-[10px] font-mono text-base font-semibold text-shadow-sm first:rounded-l-lg last:rounded-r-lg ${className} ${highlightClasses}`}
+    >
+      {children}
+    </td>
+  );
+};
