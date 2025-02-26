@@ -12,10 +12,9 @@ import {
   longDateFormat,
   millisecondsToLaptime,
 } from "../helpers/dateFormatHelpers";
-import { AddLapTimeModal } from "./AddLapTimeModal";
 
 type RaceResultsProps = {
-  results: Promise<NormalizedLeaderboardList | null>;
+  results: Promise<NormalizedLeaderboardList | undefined>;
 };
 
 export default function Leaderboard({ results }: RaceResultsProps) {
@@ -26,7 +25,6 @@ export default function Leaderboard({ results }: RaceResultsProps) {
   const [highlightedRowIndex, setHighlightedRowIndex] = useState<number | null>(
     null,
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setHighlightedRowIndex(null);
@@ -95,7 +93,7 @@ export default function Leaderboard({ results }: RaceResultsProps) {
       </div>
 
       <div className="min-h-screen w-screen overflow-x-auto">
-        <table className="mx-4 min-w-[600px] table-auto border-separate border-spacing-y-2 whitespace-nowrap">
+        <table className="mx-4 mb-20 min-w-[600px] table-auto border-separate border-spacing-y-2 whitespace-nowrap">
           <thead>
             <tr>
               <th className="px-4 text-start">#</th>

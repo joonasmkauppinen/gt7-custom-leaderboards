@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { AddLapTimeModal } from "./AddLapTimeModal";
 
-export const AddLaptimeButton = () => {
+type AddLaptimeButtonProps = {
+  sheetName: string;
+};
+
+export const AddLaptimeButton = ({ sheetName }: AddLaptimeButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -16,6 +20,7 @@ export const AddLaptimeButton = () => {
       </button>
       <AddLapTimeModal
         isOpen={isModalOpen}
+        sheetName={sheetName}
         onClose={() => setIsModalOpen(false)}
       />
     </>

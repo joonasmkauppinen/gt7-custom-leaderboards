@@ -53,7 +53,52 @@ export const leaderboardRouter = createTRPCRouter({
           .values as GoogleSheetRaceResultsValues;
         return normalizeLeaderboard(leaderboardValues);
       } catch (error) {
-        return null;
+        console.log(error);
+      }
+    }),
+
+  postLapTime: publicProcedure
+    .input(
+      z.object({
+        sheetName: z.string(),
+        driverName: z.string(),
+        laptimeGoogleSheetsDuration: z.string(),
+        dateAdded: z.string(),
+        laptimeInMs: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const auth = await google.auth.getClient({
+        scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+      });
+      const service = google.sheets({ version: "v4", auth });
+
+      const values = [
+        [
+          input.driverName,
+          input.laptimeGoogleSheetsDuration,
+          input.dateAdded,
+          input.laptimeInMs,
+        ],
+      ];
+
+      const resource = {
+        values,
+      };
+
+      try {
+        // @ts-expect-error - append function does take in the resource parameter
+        const result = await service.spreadsheets.values.append({
+          spreadsheetId: process.env.SHEET_ID,
+          range: `${input.sheetName}!A1`,
+          insertDataOption: "INSERT_ROWS",
+          valueInputOption: "USER_ENTERED",
+          resource,
+        });
+        // @ts-expect-error - we know that the result has a data property
+        console.log(result.data);
+      } catch (error) {
+        console.error(error);
       }
     }),
 });

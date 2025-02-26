@@ -122,7 +122,7 @@ export default async function Page({ params, searchParams }: Params) {
 
         {/* ADD LAP TIME BUTTON SECTION */}
         <SectionContainer className="mb-6">
-          <AddLaptimeButton />
+          <AddLaptimeButton sheetName={sheetName} />
         </SectionContainer>
 
         {/* LEADERBOARD SECTION */}

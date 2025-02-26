@@ -42,7 +42,7 @@ export const diffFromNow = (dateString: string) => {
 
   const diffInWeeks = Math.floor(diffInDays / 7);
 
-  if (diffInWeeks < 4) {
+  if (diffInWeeks < 5) {
     return `${diffInWeeks} week${diffInWeeks > 1 ? "s" : ""} ago`;
   }
 
@@ -63,4 +63,11 @@ export const diffFromNow = (dateString: string) => {
 export const millisecondsToLaptime = (milliseconds: number): string => {
   const date = new Date(milliseconds);
   return format(date, "mm:ss.SSS");
+};
+
+export const millisecondsToGoogleSheetsDuration = (
+  milliseconds: number,
+): string => {
+  const lapTime = millisecondsToLaptime(milliseconds);
+  return `00:${lapTime}`;
 };
