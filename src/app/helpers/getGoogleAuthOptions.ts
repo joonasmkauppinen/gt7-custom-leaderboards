@@ -13,7 +13,7 @@ export const getGoogleAuthOptions = ({
   return {
     scopes: [sheetScope],
     credentials: {
-      client_email: env.GCP_CLIENT_EMAIL,
+      client_email: env.GCP_SERVICE_ACCOUNT_EMAIL,
       private_key: env.GCP_PRIVATE_KEY,
     },
     projectId: env.GCP_PROJECT_ID,
