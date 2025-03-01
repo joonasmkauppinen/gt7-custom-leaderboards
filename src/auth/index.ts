@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import NextAuth, { type User, type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
@@ -25,8 +26,8 @@ const authOptions: NextAuthConfig = {
         const { password, username } = credentialsSchema.parse(credentials);
 
         if (
-          username === process.env.ADMIN_USERNAME &&
-          password === process.env.ADMIN_PASSWORD
+          username === env.ADMIN_USERNAME &&
+          password === env.ADMIN_PASSWORD
         ) {
           return Promise.resolve({
             id: "1",
@@ -39,7 +40,7 @@ const authOptions: NextAuthConfig = {
     }),
   ],
   basePath: BASE_PATH,
-  secret: process.env.AUTH_SECRET,
+  secret: env.AUTH_SECRET,
 };
 
 export const { auth, handlers, signIn, signOut } = NextAuth(authOptions);

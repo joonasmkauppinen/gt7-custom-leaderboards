@@ -2,6 +2,8 @@ import { google } from "googleapis";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { getGoogleAuthOptions } from "@/app/helpers/getGoogleAuthOptions";
+import { env } from "@/env";
 
 type GoogleSheetRaceResultsValues = Array<Array<string>>;
 export type LeaderboardItem = {
@@ -38,14 +40,14 @@ export const leaderboardRouter = createTRPCRouter({
   getLeaderboard: publicProcedure
     .input(z.object({ sheetName: z.string() }))
     .query(async ({ input }) => {
-      const auth = await google.auth.getClient({
-        scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
-      });
+      const auth = await google.auth.getClient(
+        getGoogleAuthOptions({ scope: "readonly" }),
+      );
       const service = google.sheets({ version: "v4", auth });
 
       try {
         const result = await service.spreadsheets.values.get({
-          spreadsheetId: process.env.SHEET_ID,
+          spreadsheetId: env.SHEET_ID,
           range: `${input.sheetName}!A:D`,
         });
 
@@ -68,9 +70,9 @@ export const leaderboardRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const auth = await google.auth.getClient({
-        scopes: ["https://www.googleapis.com/auth/spreadsheets"],
-      });
+      const auth = await google.auth.getClient(
+        getGoogleAuthOptions({ scope: "write" }),
+      );
       const service = google.sheets({ version: "v4", auth });
 
       const values = [
@@ -89,7 +91,7 @@ export const leaderboardRouter = createTRPCRouter({
       try {
         // @ts-expect-error - append function does take in the resource parameter
         const result = await service.spreadsheets.values.append({
-          spreadsheetId: process.env.SHEET_ID,
+          spreadsheetId: env.SHEET_ID,
           range: `${input.sheetName}!A1`,
           insertDataOption: "INSERT_ROWS",
           valueInputOption: "USER_ENTERED",

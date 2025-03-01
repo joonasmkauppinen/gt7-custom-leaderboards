@@ -1,6 +1,7 @@
 import { google } from "googleapis";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { env } from "@/env";
 
 type GoogleSheetDriverNamesValues = Array<Array<string>>;
 type NormalizedDriverNames = Array<{ name: string }>;
@@ -26,7 +27,7 @@ export const driverNamesRouter = createTRPCRouter({
 
     try {
       const result = await service.spreadsheets.values.get({
-        spreadsheetId: process.env.SHEET_ID,
+        spreadsheetId: env.SHEET_ID,
         range: `${SHEET_NAME}!A:A`,
       });
 

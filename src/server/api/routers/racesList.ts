@@ -1,6 +1,8 @@
 import { google } from "googleapis";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { env } from "@/env";
+import { getGoogleAuthOptions } from "@/app/helpers/getGoogleAuthOptions";
 
 type GoogleSheetRacesListValues = Array<Array<string>>;
 
@@ -48,14 +50,14 @@ const normalizeRacesList = (
 
 export const racesListRouter = createTRPCRouter({
   getRacesList: publicProcedure.query(async () => {
-    const auth = await google.auth.getClient({
-      scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
-    });
+    const auth = await google.auth.getClient(
+      getGoogleAuthOptions({ scope: "readonly" }),
+    );
     const service = google.sheets({ version: "v4", auth });
 
     try {
       const result = await service.spreadsheets.values.get({
-        spreadsheetId: process.env.SHEET_ID,
+        spreadsheetId: env.SHEET_ID,
         range: `${SHEET_NAME}!A:M`,
       });
 
