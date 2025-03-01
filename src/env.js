@@ -10,6 +10,9 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]),
     GOOGLE_APPLICATION_CREDENTIALS: z.string(),
     SHEET_ID: z.string(),
+    ADMIN_USERNAME: z.string(),
+    ADMIN_PASSWORD: z.string(),
+    AUTH_SECRET: z.string(),
   },
 
   /**
@@ -29,6 +32,9 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     GOOGLE_APPLICATION_CREDENTIALS: process.env.GOOGLE_APPLICATION_CREDENTIALS,
     SHEET_ID: process.env.SHEET_ID,
+    ADMIN_USERNAME: process.env.ADMIN_USERNAME,
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+    AUTH_SECRET: process.env.AUTH_SECRET,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
