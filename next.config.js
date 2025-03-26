@@ -24,6 +24,10 @@ const config = {
         protocol: "https",
         hostname: "weathertechraceway.com",
       },
+      {
+        protocol: "https",
+        hostname: "ugc.gt7.game.gran-turismo.com",
+      },
     ],
   },
 };
