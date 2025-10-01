@@ -28,6 +28,22 @@ const config = {
         protocol: "https",
         hostname: "ugc.gt7.game.gran-turismo.com",
       },
+      {
+        protocol: "https",
+        hostname: "i.namu.wiki",
+      },
+      {
+        protocol: "https",
+        hostname: "www.gran-turismo.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.squarespace-cdn.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.sportscarworldwide.com",
+      },
     ],
   },
 };
