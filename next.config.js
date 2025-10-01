@@ -30,7 +30,7 @@ const config = {
       },
       {
         protocol: "https",
-        hostname: "i.namu.wiki",
+        hostname: "www.paradigmshiftracing.com",
       },
       {
         protocol: "https",
