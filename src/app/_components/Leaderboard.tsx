@@ -99,8 +99,8 @@ export default function Leaderboard({ results }: RaceResultsProps) {
               <th className="px-4 text-start">#</th>
               <th className="px-4 text-start">Driver</th>
               <th className="px-4 text-start">Laptime</th>
-              <th className="px-4 text-start">Gap to leader</th>
               <th className="px-4 text-start">Gap to next</th>
+              <th className="px-4 text-start">Gap to leader</th>
               <th className="px-4 text-start">Date</th>
             </tr>
           </thead>
@@ -166,10 +166,10 @@ export default function Leaderboard({ results }: RaceResultsProps) {
                     {laptimeFormattedDuration}
                   </TableData>
                   <TableData isHighlighted={isHighlighted}>
-                    {index === 0 ? "-" : formattedGapToLeader}
+                    {index === 0 ? "-" : formattedGapToNext}
                   </TableData>
                   <TableData isHighlighted={isHighlighted}>
-                    {index === 0 ? "-" : formattedGapToNext}
+                    {index === 0 ? "-" : formattedGapToLeader}
                   </TableData>
                   <TableData isHighlighted={isHighlighted}>
                     {sinceAddedDateString} · {formattedDateAdded}
