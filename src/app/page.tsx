@@ -13,9 +13,15 @@ export default async function Home() {
           </h1>
           <h2 className="text-2xl font-bold tracking-tight">Race catalogue</h2>
           <ul className="flex flex-col gap-4">
-            {races?.map((race) => (
-              <RaceListItem key={race.raceResultsSheetName} {...race} />
-            ))}
+            {races
+              ?.sort(
+                (a, b) =>
+                  new Date(b.raceCreatedAtDate).getTime() -
+                  new Date(a.raceCreatedAtDate).getTime(),
+              )
+              .map((race) => (
+                <RaceListItem key={race.raceResultsSheetName} {...race} />
+              ))}
           </ul>
         </div>
       </main>
